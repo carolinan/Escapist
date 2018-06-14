@@ -20,7 +20,7 @@ function escapist_html( $lines ) {
 				! preg_match( '/%/', $this_line ) ) {
 				echo '<tr>
 				<th style="border-left:2px solid #dc3232;">' . $line_number . '</th>
-				<td> <span style="color:#dc3232;">' . __('ERROR: A HTML attribute was found on the same lince as the escaping function, a manual check is required.', 'escapist') . '</span><br>' . ' ' . 
+				<td> <span style="color:#dc3232;">' . __('ERROR: A HTML attribute was found on the same line as the escaping function, a manual check is required.', 'escapist') . '</span><br>' . ' ' . 
 				htmlspecialchars( $this_line ) .'</td>
 				</tr>';
 
