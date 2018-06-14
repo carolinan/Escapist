@@ -11,6 +11,11 @@ It does not replace a manual code review. It can only help you identify files th
 
 
 == Changelog ==
+2018-06-14
+Version 1.1
+Added pet peeves.
+minor changes to the documentation.
+
 2018-06-13 
  Version 1.0
  Initial release
@@ -18,5 +23,12 @@ It does not replace a manual code review. It can only help you identify files th
 
 
 == Credits ==
-Based on Theme Check
+Based on:
+Theme Check
 https://wordpress.org/plugins/theme-check/
+https://github.com/WordPress/theme-check
+License GPLv2: http://www.gnu.org/licenses/gpl-2.0.html
+
+Theme Sniffer
+https://github.com/WPTRT/theme-sniffer
+License GPLv2: http://www.gnu.org/licenses/gpl-2.0.html

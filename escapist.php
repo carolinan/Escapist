@@ -3,7 +3,7 @@
 Plugin Name: Escapist
 Description: Escapist creates a list of the escaping functions found in the theme and tries to determine if the function is used correctly.
 Author: Poena
-Version: 1.0
+Version: 1.1
 Text Domain: escapist
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,6 +13,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 include( plugin_dir_path( __FILE__ ) . 'attributes.php');
 include( plugin_dir_path( __FILE__ ) . 'html.php');
 include( plugin_dir_path( __FILE__ ) . 'textarea.php');
+include( plugin_dir_path( __FILE__ ) . 'other.php');
+include( plugin_dir_path( __FILE__ ) . 'petpeeve.php');
 
 /**
  * Register a custom menu page.
@@ -45,7 +47,7 @@ function escapist_custom_menu_page() {
     echo '<br><br>';
 	esc_html_e('Note: The plugin is not optimised in any way, and there are false positives where lines are incorrectly marked because the plugin only checks one line at the time.','escapist');
 	echo '<br><br>';
-	echo __('What the plugin does not do:<br>It does not check wether something is escaped or not.<br>
+	echo __('What the plugin does not do:<br>Besides the "Pet peeves", it does not check wether something is escaped or not.<br>
 		It does not replace a manual code review. It can only help you identify files that you need to look closer at.','escapist');
 	?>
     </p>
@@ -117,7 +119,7 @@ function escapist_custom_menu_page() {
 					<th scope="col" id="description" class="manage-column column-description"><?php esc_html_e('Description','escapist');?></th>
 				</tr>
 			</thead>
-			<tbody id="the-list">
+			<tbody">
 			<?php
 
 			foreach( array_keys( $php_files ) as $file ) {
@@ -151,7 +153,7 @@ function escapist_custom_menu_page() {
 				<th scope="col" id="description" class="manage-column column-description"><?php esc_html_e('Description','escapist');?></th>
 			</tr>
 		</thead>
-		<tbody id="the-list">
+		<tbody>
 			<?php
 
 			foreach( array_keys( $php_files ) as $file ) {
@@ -184,7 +186,7 @@ function escapist_custom_menu_page() {
 				<th scope="col" id="description" class="manage-column column-description"><?php esc_html_e('Description','escapist');?></th>
 			</tr>
 		</thead>
-		<tbody id="the-list">
+		<tbody>
 			<?php
 			foreach( array_keys( $php_files ) as $file ) {
 				$filepath = get_theme_root( $theme ) . "/$theme_slug/$file";
@@ -202,15 +204,73 @@ function escapist_custom_menu_page() {
 	</tbody>
 	</table>
 
+	<br><br>
+		 <table class="wp-list-table widefat plugins">
+		 <thead>
+		 	<tr>
+		 		<th colspan="2"><h2><?php esc_html_e('Checking for other escaping functions','escapist');?></h2>
+		 			<?php esc_html_e('Includes checks for esc_url and esc_js.','escapist');?> 
 
+		 		<br><br>
+		 		</th>
+		 	</tr>
+			<tr>
+				<th scope="col" id="name" class="manage-column column-name column-primary"><?php esc_html_e('File name','escapist');?></th>
+				<th scope="col" id="description" class="manage-column column-description"><?php esc_html_e('Description','escapist');?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			foreach( array_keys( $php_files ) as $file ) {
+				$filepath = get_theme_root( $theme ) . "/$theme_slug/$file";
+				$lines = file( $filepath, FILE_IGNORE_NEW_LINES ); // Read the theme file into an array
+
+				if ( preg_grep( '/esc_url/', $lines ) or preg_grep( '/esc_js/', $lines )) {
+					echo '<tr class="active">
+					<th class="check-column" colspan="2"><strong style="margin-left:8px;">' . $file. '<strong></th>
+					<td><br></td>
+					</tr>';
+
+					escapist_other( $lines );
+				}
+			}//End foreach.
+		?>
+	</tbody>
+	</table>
+
+	<br><br>
+		 <table class="wp-list-table widefat plugins">
+		 <thead>
+		 	<tr>
+		 		<th colspan="2"><h2><?php esc_html_e('Pet peeves','escapist');?></h2>
+			 		<br><br>
+		 		</th>
+		 	</tr>
+			<tr>
+				<th scope="col" id="name" class="manage-column column-name column-primary"><?php esc_html_e('File name','escapist');?></th>
+				<th scope="col" id="description" class="manage-column column-description"><?php esc_html_e('Description','escapist');?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			foreach( array_keys( $php_files ) as $file ) {
+				$filepath = get_theme_root( $theme ) . "/$theme_slug/$file";
+				$lines = file( $filepath, FILE_IGNORE_NEW_LINES ); // Read the theme file into an array
+
+				if ( preg_grep( '/home_url/', $lines ) or preg_grep( '/placeholder/', $lines ) ) {
+					echo '<tr class="active">
+					<th class="check-column" colspan="2"><strong style="margin-left:8px;">' . $file. '<strong></th>
+					<td><br></td>
+					</tr>';
+
+					escapist_petpeeve( $lines );
+				}
+			}//End foreach.
+		?>
+	</tbody>
+	</table>
 	</div>
 </div>
 <?php
 }
-
-
-
-
-
-
 

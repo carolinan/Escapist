@@ -1,6 +1,6 @@
 <?php
 /*
-* A funciton for checking for esc_attr.
+* A funciton for checking for esc_textarea.
 * Important: not all HTML attributes have been included, only those commonly found in themes.
 */
 
